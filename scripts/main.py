@@ -1,38 +1,65 @@
 import os
+import sys
 import pandas as pd
-from src.load_data import load_data
-from src.data_preparation import clean_data, save_cleaned_data
-from src.exploratory_analysis import aggregate_user_data, correlation_analysis, pca_analysis
 
-df = '../data/Week2_challenge_data_source.xlsx'
-data = pd.read_excel(df)
-# Save the loaded data to CSV for further access
-data.to_csv('../data/cleaned_week2_challenge_data_source.csv', index=False)
+# Add the src directory to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
-# Reload the cleaned CSV data
-data_path = pd.read_csv('../data/cleaned_week2_challenge_data_source.csv')
-cleaned_data_path = '../data/cleaned_telecom_data.csv'
-
+from load_data import load_data
+from data_preparation import clean_data, save_cleaned_data
+from exploratory_analysis import (aggregate_user_data, correlation_analysis, pca_analysis,
+                                   describe_variables, variable_transformation, analyze_basic_metrics,
+                                   univariate_analysis, bivariate_analysis)
 
 def main():
-    # 1. Load the data
+    # File paths
+    data_path = '../data/cleaned_week2_challenge_data_source.csv'
+    cleaned_data_path = '../data/cleaned_telecom_data.csv'
+
+    # Load the data
+    print("Loading data...")
     df = load_data(data_path)
     if df is None:
+        print("Data loading failed.")
         return
-    
-    # 2. Clean the data
+
+    # Clean the data
+    print("Cleaning data...")
     cleaned_df = clean_data(df)
     save_cleaned_data(cleaned_df, cleaned_data_path)
 
-    # 3. Perform EDA - User Data Aggregation
+    # Perform EDA - User Data Aggregation
+    print("Aggregating user data...")
     user_data = aggregate_user_data(cleaned_df)
     print("Aggregated User Data:")
     print(user_data.head())
 
-    # 4. Perform Correlation Analysis
+    # Perform Descriptive Analysis
+    print("Describing variables...")
+    describe_variables(cleaned_df)
+
+        # Perform Variable Transformation
+    print("Performing variable transformation...")
+    variable_transformation(cleaned_df)
+
+    # Perform Basic Metrics Analysis
+    print("Analyzing basic metrics...")
+    analyze_basic_metrics(cleaned_df)
+
+    # Perform Univariate Analysis
+    print("Performing univariate analysis...")
+    univariate_analysis(cleaned_df)
+
+    # Perform Bivariate Analysis
+    print("Performing bivariate analysis...")
+    bivariate_analysis(cleaned_df)
+
+    # Perform Correlation Analysis
+    print("Performing correlation analysis...")
     correlation_analysis(cleaned_df)
 
-    # 5. Perform PCA
+    # Perform PCA
+    print("Performing PCA...")
     explained_variance = pca_analysis(cleaned_df)
     print(f"Explained Variance by PCA Components: {explained_variance}")
 
