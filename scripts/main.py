@@ -10,6 +10,9 @@ from data_preparation import clean_data, save_cleaned_data
 from exploratory_analysis import (aggregate_user_data, correlation_analysis, pca_analysis,
                                    describe_variables, variable_transformation, analyze_basic_metrics,
                                    univariate_analysis, bivariate_analysis)
+from clustering import perform_clustering, plot_elbow_method
+from aggregate import (aggregate_total_traffic_per_application, top_10_most_engaged_users_per_application,
+                       identify_top_3_most_used_applications, plot_top_3_most_used_applications)
 
 def main():
     # File paths
@@ -62,6 +65,28 @@ def main():
     print("Performing PCA...")
     explained_variance = pca_analysis(cleaned_df)
     print(f"Explained Variance by PCA Components: {explained_variance}")
+
+
+    # Perform Clustering
+    print("Performing clustering...")
+    perform_clustering(cleaned_df)
+    plot_elbow_method(cleaned_df)
+
+    # Aggregate Total Traffic per Application
+    print("Aggregating total traffic per application...")
+    aggregate_total_traffic_per_application(cleaned_df)
+
+    # Top 10 Most Engaged Users per Application
+    print("Finding top 10 most engaged users per application...")
+    top_10_most_engaged_users_per_application(cleaned_df)
+
+    # Identify Top 3 Most Used Applications
+    print("Identifying top 3 most used applications...")
+    identify_top_3_most_used_applications(cleaned_df)
+
+    # Plot Top 3 Most Used Applications
+    print("Plotting top 3 most used applications...")
+    plot_top_3_most_used_applications(cleaned_df)
 
 if __name__ == "__main__":
     main()

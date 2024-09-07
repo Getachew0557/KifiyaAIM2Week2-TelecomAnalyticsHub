@@ -114,3 +114,24 @@ def bivariate_analysis(df: pd.DataFrame):
     plt.ylabel('Total Data DL (Bytes)')
     plt.legend()
     plt.show()
+
+def plot_top_3_apps(df: pd.DataFrame):
+    """Plot the top 3 most used applications based on total traffic."""
+    applications = ['Social Media', 'Google', 'Email', 'Youtube', 'Netflix', 'Gaming', 'Other']
+    application_traffic = {}
+    for app in applications:
+        traffic_col = f'{app}_total_traffic'
+        application_traffic[app] = df[traffic_col].sum()
+    
+    top_3_apps = sorted(application_traffic.items(), key=lambda x: x[1], reverse=True)[:3]
+    top_3_apps_df = pd.DataFrame(top_3_apps, columns=['Application', 'Total Traffic'])
+    
+    plt.figure(figsize=(10, 5))
+    plt.bar(top_3_apps_df['Application'], top_3_apps_df['Total Traffic'], color=['blue', 'green', 'red'])
+    plt.title('Top 3 Most Used Applications (Total Traffic)')
+    plt.ylabel('Total Traffic (Bytes)')
+    plt.xlabel('Application')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig('../data/top_3_apps_usage.png')
+    plt.show()
