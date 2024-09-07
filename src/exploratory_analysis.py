@@ -54,3 +54,63 @@ def pca_analysis(df: pd.DataFrame):
     plt.show()
 
     return explained_variance
+
+def describe_variables(df: pd.DataFrame):
+    """Describes all relevant variables and associated data types."""
+    print("Descriptive Statistics:")
+    print(df.describe(include='all'))
+    print("\nData Types:")
+    print(df.dtypes)
+
+def variable_transformation(df: pd.DataFrame):
+    """Performs variable transformation and segmentation."""
+    # Segment users into deciles based on total session duration
+    user_data = aggregate_user_data(df)
+    user_data['decile_class'] = pd.qcut(user_data['total_session_duration'], 10, labels=False)
+    
+    # Compute total data (DL+UL) per decile class
+    decile_data = user_data.groupby('decile_class').agg({
+        'total_download_data': 'sum',
+        'total_upload_data': 'sum'
+    })
+    
+    print("\nDecile Data:")
+    print(decile_data)
+
+def analyze_basic_metrics(df: pd.DataFrame):
+    """Analyzes basic metrics of the dataset."""
+    print("\nBasic Metrics:")
+    print(df[['Total DL (Bytes)', 'Total UL (Bytes)']].describe())
+
+def univariate_analysis(df: pd.DataFrame):
+    """Conducts univariate analysis - both graphical and non-graphical."""
+    print("\nNon-Graphical Univariate Analysis:")
+    print(df[['Total DL (Bytes)', 'Total UL (Bytes)']].agg(['mean', 'median', 'std', 'var']))
+    
+    plt.figure(figsize=(12, 6))
+    plt.subplot(1, 2, 1)
+    sns.histplot(df['Total DL (Bytes)'], kde=True)
+    plt.title('Histogram of Total Download Data')
+
+    plt.subplot(1, 2, 2)
+    sns.histplot(df['Total UL (Bytes)'], kde=True)
+    plt.title('Histogram of Total Upload Data')
+
+    plt.tight_layout()
+    plt.show()
+
+def bivariate_analysis(df: pd.DataFrame):
+    """Conducts bivariate analysis - relationship between applications and total DL+UL data."""
+    app_cols = ['Social Media DL (Bytes)', 'Google DL (Bytes)', 'Email DL (Bytes)',
+                'Youtube DL (Bytes)', 'Netflix DL (Bytes)', 'Gaming DL (Bytes)',
+                'Other DL (Bytes)']
+    df['Total Data DL'] = df[app_cols].sum(axis=1)
+
+    plt.figure(figsize=(14, 8))
+    for col in app_cols:
+        sns.scatterplot(x=df[col], y=df['Total Data DL'], label=col)
+    plt.title('Scatter plot of Application DL Data vs Total Data DL')
+    plt.xlabel('Application DL (Bytes)')
+    plt.ylabel('Total Data DL (Bytes)')
+    plt.legend()
+    plt.show()

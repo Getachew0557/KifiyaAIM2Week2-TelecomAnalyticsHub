@@ -17,9 +17,11 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     for col in unique_identifiers:
         df[col] = df[col].fillna('Unknown')
 
+        # Drop specific columns
+    cols_to_drop = ['Bearer Id']
     # Drop columns with more than 50% missing values
     threshold = 0.5
-    cols_to_drop = [col for col in df.columns if (df[col].isnull().mean() > threshold)]
+    cols_to_drop += [col for col in df.columns if (df[col].isnull().mean() > threshold)]
     df = df.drop(columns=cols_to_drop)
     
     return df
