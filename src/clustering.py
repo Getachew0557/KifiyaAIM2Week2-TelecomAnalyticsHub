@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
+from typing import Tuple
+
+from sklearn.metrics import euclidean_distances
 
 def perform_clustering(df: pd.DataFrame):
     # Aggregating metrics for clustering

@@ -1,11 +1,13 @@
 import os
 import sys
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
 # Add the src directory to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
-from load_data import load_data
+#from load_data import load_data
+from load_data import load_data_from_postgres
 from data_preparation import clean_data, save_cleaned_data
 from exploratory_analysis import (aggregate_user_data, correlation_analysis, pca_analysis,
                                    describe_variables, variable_transformation, analyze_basic_metrics,
@@ -13,15 +15,18 @@ from exploratory_analysis import (aggregate_user_data, correlation_analysis, pca
 from clustering import perform_clustering, plot_elbow_method
 from aggregate import (aggregate_total_traffic_per_application, top_10_most_engaged_users_per_application,
                        identify_top_3_most_used_applications, plot_top_3_most_used_applications)
+from data_analysis import perform_data_analysis
 
 def main():
-    # File paths
-    data_path = '../data/cleaned_week2_challenge_data_source.csv'
+    #data_path = '../data/cleaned_week2_challenge_data_source.csv'
     cleaned_data_path = '../data/cleaned_telecom_data.csv'
+    # SQL query for loading data
+    query = "SELECT * FROM xdr_data;"
 
-    # Load the data
+    # Load the data from PostgreSQL
     print("Loading data...")
-    df = load_data(data_path)
+    #df = load_data(data_path)
+    df = load_data_from_postgres(query)
     if df is None:
         print("Data loading failed.")
         return
@@ -41,7 +46,7 @@ def main():
     print("Describing variables...")
     describe_variables(cleaned_df)
 
-        # Perform Variable Transformation
+    # Perform Variable Transformation
     print("Performing variable transformation...")
     variable_transformation(cleaned_df)
 
@@ -87,6 +92,11 @@ def main():
     # Plot Top 3 Most Used Applications
     print("Plotting top 3 most used applications...")
     plot_top_3_most_used_applications(cleaned_df)
+
+    # Call the data analysis function at the end of the pipeline
+    print("Performing data analysis...")
+    analysis_results = perform_data_analysis(cleaned_df)
+    print("Data Analysis Results:\n", analysis_results.head())
 
 if __name__ == "__main__":
     main()
