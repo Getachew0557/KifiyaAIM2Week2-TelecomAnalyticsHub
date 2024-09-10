@@ -1,0 +1,16 @@
+name: streamlit-env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - matplotlib
+  - numpy
+  - pandas
+  - pytest
+  - scikit-learn
+  - seaborn
+  - scipy
+  - psycopg2
+  - python-dotenv
+  - psycopg2-binary
+  - sqlalchemy
