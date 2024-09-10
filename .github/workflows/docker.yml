@@ -23,9 +23,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t my-app-image .
+          docker build -t my-app-image -f path/to/your/Dockerfile .
 
       - name: Run tests
         run: |
           docker run --rm my-app-image pytest --maxfail=1 --disable-warnings -q
-
