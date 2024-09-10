@@ -23,7 +23,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t my-app-image -f path/to/your/Dockerfile .
+          docker build -t my-app-image -f Dockerfile .
 
       - name: Run tests
         run: |
