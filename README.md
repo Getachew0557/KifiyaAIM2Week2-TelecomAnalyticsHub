@@ -40,8 +40,8 @@ The objective of this project is to analyze the data provided by TellCo to ident
 2. **Setup Virtual Environment**:
 
     ```bash
-    python -m venv env
-    source env/bin/activate
+    conda create --name enve-week2 python=3.11
+    conda activate enve-week2
     ```
 
 3. **Install Dependencies**:
@@ -72,55 +72,82 @@ The objective of this project is to analyze the data provided by TellCo to ident
     docker run -p 8501:8501 telecom-insights
     ```
 
+8. Streamlit App:
+
+   - Your Streamlit application can be found in streamlit/app.py.
+   - To run the Streamlit app locally, use the following command:
+
+   ```bash
+   streamlit run streamlit/app.py
+   ```
+
+   - Once the streamlitr is running, access your Streamlit app at http:/localhost:8501.
+
 ## Tasks and Methodologies
 
 ### Task 1 - User Overview Analysis
 
-- **Objective**: Analyze user behavior and handset usage to identify top devices and manufacturers.
-- **Sub-tasks**:
-  - Identify top 10 handsets and top 3 manufacturers.
-  - Analyze the top 5 handsets per manufacturer.
-  - Provide recommendations based on the findings.
+- **Business Overview**: Understanding user behavior is crucial for any business aiming to enhance its offerings and tailor solutions to customer needs. This analysis provides insights into customer device preferences and usage patterns, which can drive targeted marketing strategies and product improvements.
 
-- **Deliverables**:
-  - Python scripts for data aggregation and analysis.
-  - EDA reports and visualizations.
+- **Objective**: Conduct a comprehensive User Overview Analysis to identify the most popular handsets, manufacturers, and their usage patterns.
+- **Sub-tasks**:
+  - Identify Top 10 Handsets: Determine the top 10 handsets used by customers.
+  - Identify Top 3 Manufacturers: Identify the top 3 handset manufacturers.
+  - Analyze Top Handsets by Manufacturer: For each of the top 3 manufacturers, identify the top 5 handsets.
+  - Interpretation and Recommendations: Provide insights and recommendations based on the analysis to inform marketing strategies.
+
+- **Additional Analysis**:
+  - Aggregate user data on xDR (data sessions) including:
+    - Number of sessions
+    - Session duration
+    - Total download (DL) and upload (UL) data
+    - Data volume per application
+  - Perform Exploratory Data Analysis (EDA) to uncover insights and handle missing values and outliers.
+    - Describe variables and data types
+    - Segment users into deciles based on total session duration and compute total data per decile
+    - Conduct univariate and bivariate analyses
+    - Perform correlation analysis
+    - Execute Principal Component Analysis (PCA) for dimensionality reduction and interpret results
 
 ### Task 2 - User Engagement Analysis
 
-- **Objective**: Assess user engagement based on session frequency, duration, and traffic.
-- **Sub-tasks**:
-  - Aggregate metrics per customer and classify users into engagement clusters using k-means clustering.
-  - Analyze engagement metrics and identify top engaged users and applications.
-  - Optimize clustering parameters and interpret findings.
+- **Business Overview**: Evaluating user engagement is essential for enhancing user experience and optimizing network resources. By understanding how frequently and for how long users engage with applications, businesses can tailor their offerings to improve user satisfaction and retention.
 
-- **Deliverables**:
-  - Python scripts for engagement metrics calculation and clustering.
-  - Visualizations and interpretations.
+- **Objective**: Assess user engagement based on session frequency, duration, and traffic to optimize service quality and resource allocation.
+
+- **Sub-tasks**:
+  - Aggregate Engagement Metrics: Aggregate session frequency, duration, and total traffic per customer.
+  - Engagement Clustering: Normalize metrics and use k-means clustering (k=3) to classify customers into engagement clusters.
+  - Analyze Engagement Metrics: Compute and interpret non-normalized metrics for each cluster. Identify top engaged users and applications.
+  - Visualize Engagement: Plot top 3 most used applications and identify the optimal number of clusters using the elbow method.
 
 ### Task 3 - Experience Analysis
 
-- **Objective**: Evaluate user experience based on network parameters and device characteristics.
-- **Sub-tasks**:
-  - Aggregate and analyze TCP retransmission, RTT, throughput, and handset type.
-  - Compute and list top and bottom values for key metrics.
-  - Perform k-means clustering based on experience metrics.
+- **Business Overview**: Analyzing user experience in the telecom industry involves assessing network performance and device characteristics. This helps in understanding user satisfaction related to network parameters and device performance, which is vital for improving service quality.
 
-- **Deliverables**:
-  - Python scripts for experience analysis and clustering.
-  - Insights and visualizations.
+- **Objective**: Evaluate user experience based on network parameters and device characteristics to identify performance issues and areas for improvement.
+
+- **Sub-tasks**:
+  - Aggregate Experience Metrics: Collect average TCP retransmission, RTT, throughput, and handset type per customer. Handle missing values and outliers.
+  - Top and Bottom Values: Identify the top 10, bottom 10, and most frequent values for TCP retransmission, RTT, and throughput.
+  - Analyze Metrics by Handset Type: Compute and interpret the distribution of throughput and average TCP retransmission per handset type.
+  - Experience Clustering: Perform k-means clustering (k=3) on experience metrics and describe each cluster based on data insights.
 
 ### Task 4 - Satisfaction Analysis
 
-- **Objective**: Determine customer satisfaction based on engagement and experience scores.
+- **Business Overview**: Customer satisfaction is influenced by both engagement and experience. Analyzing satisfaction helps in identifying highly satisfied customers and improving service quality based on user feedback.
+
+- **Objective**: Analyze customer satisfaction by combining engagement and experience metrics to predict satisfaction scores and identify areas for improvement.
+
 - **Sub-tasks**:
   - Compute engagement and experience scores using Euclidean distance.
   - Build a regression model to predict satisfaction scores.
   - Perform clustering on satisfaction scores and export results.
-
-- **Deliverables**:
-  - Python scripts for satisfaction score calculation and regression modeling.
-  - Visualizations and final report.
+  - Compute Scores: Assign engagement and experience scores to users using Euclidean distance. Compute average satisfaction scores.
+  - Predict Satisfaction: Build a regression model to predict satisfaction scores.
+  - Clustering: Perform k-means clustering (k=2) on engagement and experience scores. Aggregate and interpret average scores per cluster.
+  - Export Data: Export the final table containing user IDs and scores to a local MySQL database. Provide a screenshot of the query output.
+  - Model Tracking: Deploy and monitor the model using tools like Docker. Track and document model changes, metrics, and outputs.
 
 ## Dashboard Development
 

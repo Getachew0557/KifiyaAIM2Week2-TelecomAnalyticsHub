@@ -8,3 +8,4 @@ scipy
 psycopg2-binary
 python-dotenv
 sqlalchemy
+mysql-connector-python
