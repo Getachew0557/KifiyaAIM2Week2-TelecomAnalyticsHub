@@ -24,6 +24,11 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t my-app-image:latest -f Dockerfile .
+      
+      # Optional: Save the image as a tar file in case tagging fails
+      - name: Save Docker image
+        run: |
+          docker save my-app-image:latest -o my-app-image.tar
 
       - name: Run tests
         run: |
@@ -41,6 +46,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Load the image if tagging failed
+      - name: Load Docker image
+        run: |
+          docker load -i my-app-image.tar
 
       - name: Tag Docker image
         run: |
